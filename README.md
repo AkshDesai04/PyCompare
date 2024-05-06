@@ -18,7 +18,7 @@ The program scans the dataset to identify all images and their locations.
 
 #### 3.1. Meta Data Comparison
 
-Metadata of the images, such as size, date, and camera information, are compared. If the metadata is EXACTLY the same, no further comparitions need to be made. This is however the users to decide should they want to go for a deep scan.
+Metadata of the images, such as size, date, and camera information, are compared. If the metadata is the same, no further comparisons need to be made. This is however the users to decide should they want to go for a deep scan.
 
 #### 3.3. Image Preprocessing
 
@@ -30,7 +30,7 @@ If the metadata is not identical, preprocessing steps are applied to standardize
 
 - A subset of pixels is selected for comparison, typically a user-defined area (e.g., 10% of image dimensions by default).
 - All pixels in the selected area are compared for similarity.
-- If the subsets are the same, it now constitutes a full image comparition; else, the images at hand can be considered differet.
+- If the subsets are the same, it now constitutes a full image comparison; otherwise, the images at hand can be considered different.
 
 ### 4. Result
 
