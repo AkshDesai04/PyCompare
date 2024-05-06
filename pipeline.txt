@@ -3,7 +3,7 @@
 - Comparison
     - 2 images Input
     - meta data Comparison
-    - if size not same
+    - if size, date, camera info etc not same
         - rotate to same orientation
         - compress size
     - Check (0, 0) - (10, 10) pixels with rotates pics (x by x instead of 10 x 10 to allow the user to have a choice. keep 10% of image dimension as default)
