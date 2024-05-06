@@ -20,13 +20,13 @@ The program scans the dataset to identify all images and their locations.
 
 Metadata of the images, such as size, date, and camera information, are compared. If the metadata is the same, no further comparisons need to be made. This is however the users to decide should they want to go for a deep scan.
 
-#### 3.3. Image Preprocessing
+#### 3.2. Image Preprocessing
 
 If the metadata is not identical, preprocessing steps are applied to standardize the images:
 - Rotation to the same orientation. (To detect rotated images)
 - Compression to reduce size. (To tackle different resolutions of the same image.)
 
-#### 3.4. Pixel Comparison
+#### 3.3. Pixel Comparison
 
 - A subset of pixels is selected for comparison, typically a user-defined area (e.g., 10% of image dimensions by default).
 - All pixels in the selected area are compared for similarity.
