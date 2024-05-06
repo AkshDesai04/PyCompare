@@ -1,4 +1,4 @@
-# Image Duplicate Finder
+# PyCompare
 
 ## Overview
 
