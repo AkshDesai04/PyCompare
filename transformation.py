@@ -17,3 +17,17 @@ def rotate_image(input_image_path, degrees = 90):
         return rotate_image
     except Exception as e:
         print(f"An error occurred: {e}")
+
+def resize(image, height, width):
+    try:
+        # Read the image
+        img = cv2.imread(image)
+
+        # Resize the image
+        resized_img = cv2.resize(img, (width, height))
+
+        # Save the resized image
+        return resized_img
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
