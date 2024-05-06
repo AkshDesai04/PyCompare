@@ -1,0 +1,11 @@
+- User Input
+- Discovery
+- Comparission
+    - 2 images Input
+    - meta data Comparission
+    - if size not same
+        - rotate to same orientation
+        - compress size
+    - Check (0, 0) - (10, 10) pixels with rotates pics
+    - Comparing all pixels
+- Result
