@@ -1,6 +1,6 @@
 import os
 
-def find_images(folder_path, extensions):
+def drilldown(folder_path, extensions):
     image_files = []
     for root, dirs, files in os.walk(folder_path):
         for file in files:
