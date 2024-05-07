@@ -11,3 +11,7 @@ if __name__ == "__main__":
 
     # print("meta: ", metadata)
     print(metadata)
+    
+    for i in range(len(metadata)):
+        for j in range(i+1, len(metadata)):
+            print(f"Comparing {images[i]} with {images[j]}")
