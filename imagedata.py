@@ -2,6 +2,8 @@ import cv2
 import os
 import exifread
 
+default_keys = ['File Size  (bytes)', 'Image Make', 'Image Model', 'Image Software', 'Image DateTime', 'GPS GPSLatitude', 'GPS GPSLongitude', 'EXIF ExposureTime', 'EXIF ISOSpeedRatings', 'EXIF ShutterSpeedValue', 'EXIF FocalLength', 'EXIF SubSecTime']
+
 def get_image_metadata(image_path):
     try:
         # Read the image using OpenCV
@@ -35,3 +37,12 @@ def get_image_metadata(image_path):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+    
+def compare_metadata(metadata, keys = default_keys):
+    seen_pairs = set()
+    for sublist in metadata:
+        pair = tuple(sublist.get(key) for key in keys)
+        if pair in seen_pairs:
+            return True
+        seen_pairs.add(pair)
+    return False
