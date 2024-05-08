@@ -9,7 +9,7 @@ def drilldown(folder_path, extensions = {'.bmp', '.dib', '.jpeg', '.jpg', '.jp2'
                 image_files.append(os.path.join(root, file))
     return image_files
 
-
-folder = input('Provide the folder path: ') # Getting the path of the folder to drill down into
-images = drilldown(folder) # Getting the list of images in the folder and all sub-folders
-print(images)
+if __name__ == "__name__":
+    folder = input('Provide the folder path: ') # Getting the path of the folder to drill down into
+    images = drilldown(folder) # Getting the list of images in the folder and all sub-folders
+    print(images)
