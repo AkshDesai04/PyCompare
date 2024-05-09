@@ -8,4 +8,3 @@ def drilldown(targeted_directory:str, extensions:list[str] = ['.bmp', '.dib', '.
         if file_path.is_file() and file_path.suffix.lower() in extensions:
             raw_filename = u'{}'.format(file_path)
             image_files.append(raw_filename)
-    return image_files
