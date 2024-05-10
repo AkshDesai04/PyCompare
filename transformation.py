@@ -24,7 +24,9 @@ def resize(image, height, width):
         img = cv2.imread(image)
 
         # Resize the image
-        resized_img = cv2.resize(img, (width, height))
+        new_height = 360
+        new_width = int(width * (new_height / height))
+        resized_img = cv2.resize(img, (new_width, new_height)) #Convert the image to a 360x480 image
 
         # Save the resized image
         return resized_img
