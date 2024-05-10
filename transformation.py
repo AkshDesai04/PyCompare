@@ -29,7 +29,7 @@ def resize(image, height, width):
         resized_img = cv2.resize(img, (new_width, new_height)) #Convert the image to a 360x480 image
 
         # Save the resized image
-        return resized_img
+        return id(resized_img)
     
     except Exception as e:
         print(f"An error occurred: {e}")
