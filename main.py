@@ -6,6 +6,8 @@ import compare
 import transformation
 from pprint import pprint 
 
+
+
 if __name__ == "__main__":
     metadata = []
     duplicates = []
