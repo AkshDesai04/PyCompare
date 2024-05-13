@@ -7,7 +7,9 @@ default_keys = ['File Size  (bytes)', 'Image Make', 'Image Model', 'Image Softwa
 def get_image_metadata(image_path):
     try:
         # Read the image using OpenCV
+        print("Starting read")
         img = cv2.imread(image_path)
+        print("Everything else")
 
         # Get image dimensions
         height, width, channels = img.shape
