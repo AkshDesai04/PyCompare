@@ -7,10 +7,12 @@ if __name__ == "__main__":
     images = drilldown.drilldown(folder) # Getting the list of images in the folder and all sub-folders
     pprint(f"images: {[str(path_object) for path_object in images]}") # more readable than the simple print 
     metadata = []
-    i = 0 # testing
-    size = images.__len__() # testing
     for image in images:
-        print(str(i), '\\', size) #testing
-        i+=1 #testing
         metadata.append(imagedata.get_image_metadata(image)) # Fetching metadata for each image for later comparisons
-    _ =[pprint(data) for data in metadata ] #print each dictionnary seperately
+
+    # print("meta: ", metadata)
+    print(metadata)
+    
+    for i in range(len(metadata)):
+        for j in range(i+1, len(metadata)):
+            print(f"Comparing {images[i]} with {images[j]}")
