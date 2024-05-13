@@ -1,12 +1,16 @@
 import os
+import defaults
 
-def duplicate_managment(i, image_paths, metadata, proxy_images, decision):
-    #if decision = 0 then print the path of file on i'th index of the images list. After that remove the i'th index from the metadata list and proxy_images list.
-    #if decision = 1 then copy the image from the path of file on i'th index of the images list to a given directory. After that remove the i'th index from the metadata list and proxy_images list.
-    #if decision = 2 then delete the image from the path of file on i'th index of the images list. After that remove the i'th index from the metadata list and proxy_images list.
-    if decision == 0:
-        print(f"Duplicate found at: {image_paths[i]}")
-    elif decision == 1:
-        os.system(f"copy {image_paths[i]} C:\\Users\\akshd\\Pictures\\duplicates")
-    elif decision == 2:
-        os.system(f"del {image_paths[i]}")
+
+def duplicate_management(i, image_paths, metadata, proxy_images, decision = defaults.PRINT_ONLY, destination = ''):
+    match decision:
+        case defaults.PRINT_ONLY:
+            print(f"Duplicate found at: {image_paths[i]}")
+        case defaults.COPY_ONLY:
+            os.move(image_paths[i], destination.join(image_paths[i].split('/')))
+        case defaults.DELETE_ONLY:
+            os.remove(image_paths[i])
+        
+    del image_paths[i]
+    del metadata[i]
+    del proxy_images[i]

@@ -1,10 +1,12 @@
-import sys
+import sys # testing
 import cv2
 import drilldown
 import imagedata
 import compare
 import transformation
 from pprint import pprint 
+import defaults
+import orchestrator
 
 
 
@@ -43,8 +45,11 @@ if __name__ == "__main__":
                     if compare(cv2.imread(images[i]), cv2.imread(images[j])):
                         duplicates.append(images[j])
 
+    for duplicate in duplicates:
+        # orchestrator.duplicate_management(duplicate, images, metadata, proxy_images, defaults.PRINT_ONLY)
+        pass #TODO: Uncomment and remove pass while testing and in production. Commented function call to avoid deleting files.
+                    
+
     #Holding output for Testing
-    print('Done and waiting to die')
-    while True:
-        pass
+    input('Done and waiting to die. Press Enter to kill.')
     #Holding output for Testing
