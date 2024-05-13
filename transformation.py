@@ -21,16 +21,13 @@ def rotate_image(input_image_path, degrees = 90):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def resize(image, height = new_dimension, width = new_dimension):
+def resize(img, height = new_dimension, width = new_dimension):
     try:
-        # Read the image
-        img = cv2.imread(image)
-
         # Resize the image
         resized_img = cv2.resize(img, (width, height)) #Convert the image to a 360x360 image
 
         # Save the resized image
-        return id(resized_img)
+        return resized_img
     
     except Exception as e:
         print(f"An error occurred: {e}")

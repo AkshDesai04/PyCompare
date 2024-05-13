@@ -4,13 +4,8 @@ import exifread
 
 default_keys = ['File Size  (bytes)', 'Image Make', 'Image Model', 'Image Software', 'Image DateTime', 'GPS GPSLatitude', 'GPS GPSLongitude', 'EXIF ExposureTime', 'EXIF ISOSpeedRatings', 'EXIF ShutterSpeedValue', 'EXIF FocalLength', 'EXIF SubSecTime']
 
-def get_image_metadata(image_path):
+def get_image_metadata(image_path, img):
     try:
-        # Read the image using OpenCV
-        print("Starting read")
-        img = cv2.imread(image_path)
-        print("Everything else")
-
         # Get image dimensions
         height, width, channels = img.shape
 
