@@ -1,6 +1,6 @@
 from pathlib import Path
 
-def drilldown(targeted_directory:str, extensions:list[str] = ['.bmp', '.dib', '.jpeg', '.jpg', '.jp2', '.png', '.pbm', '.pgm', '.ppm', '.sr', '.ras', '.tiff', '.tif', '.exr', '.jxr', '.pfm', '.pds', '.pfm', '.viff', '.xbm', '.xpm', '.dds', '.eis', '.mng', '.web', '.hei', '.hei', '.av']):
+def drilldown(targeted_directory:str, extensions = ['.bmp', '.dib', '.jpeg', '.jpg', '.jp2', '.png', '.pbm', '.pgm', '.ppm', '.sr', '.ras', '.tiff', '.tif', '.exr', '.jxr', '.pfm', '.pds', '.pfm', '.viff', '.xbm', '.xpm', '.dds', '.eis', '.mng', '.web', '.hei', '.hei', '.av']):
     image_files:list[str]= []
     folder_path:Path = Path(targeted_directory)
     
@@ -8,3 +8,4 @@ def drilldown(targeted_directory:str, extensions:list[str] = ['.bmp', '.dib', '.
         if file_path.is_file() and file_path.suffix.lower() in extensions:
             raw_filename = u'{}'.format(file_path)
             image_files.append(raw_filename)
+    return image_files
