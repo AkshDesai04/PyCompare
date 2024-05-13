@@ -1,5 +1,8 @@
 import cv2
 
+
+new_dimension = 360
+
 def rotate_image(input_image_path, degrees = 90):
     try:
         # Read the image
@@ -18,15 +21,13 @@ def rotate_image(input_image_path, degrees = 90):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def resize(image, height, width):
+def resize(image, height = new_dimension, width = new_dimension):
     try:
         # Read the image
         img = cv2.imread(image)
 
         # Resize the image
-        new_height = 360
-        new_width = int(width * (new_height / height))
-        resized_img = cv2.resize(img, (new_width, new_height)) #Convert the image to a 360x480 image
+        resized_img = cv2.resize(img, (width, height)) #Convert the image to a 360x360 image
 
         # Save the resized image
         return id(resized_img)
