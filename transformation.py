@@ -1,7 +1,7 @@
 import cv2
 
 
-new_dimension = 360
+new_dimension = 100
 
 def rotate_image(input_image_path, degrees = 90):
     try:
