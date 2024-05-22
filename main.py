@@ -2,7 +2,7 @@ import sys
 import cv2
 import drilldown
 import imagedata
-import compare
+from compare import compare_images_cuda
 import transformation
 from pprint import pprint
 import defaults
@@ -67,8 +67,8 @@ def main():
                 if metadata[i] == metadata[j]:
                     duplicates.append(images[j])
                 else:
-                    if compare(proxy_images[i], proxy_images[j]):
-                        if compare(cv2.imread(images[i]), cv2.imread(images[j])):
+                    if compare_images_cuda(proxy_images[i], proxy_images[j]):
+                        if compare_images_cuda(cv2.imread(images[i]), cv2.imread(images[j])):
                             duplicates.append(images[j])
 
         for duplicate in duplicates:
