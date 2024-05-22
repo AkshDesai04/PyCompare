@@ -25,7 +25,7 @@ if __name__ == "__main__":
         metadata.append(imagedata.get_image_metadata(image, img)) # Fetching metadata for each image for later comparisons
         proxy_images.append(transformation.resize(img)) # Creating Proxy images and storing in memory
 
-    path = 'C:\\Users\\akshd\\Pictures\\proxy\\'
+    path = '.\\proxy\\'
     i = 0
     for img_write in proxy_images:
         print('writing i')
