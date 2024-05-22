@@ -40,20 +40,23 @@ def main():
     print('metadata size: ', str(sys.getsizeof(metadata)))
 
 
-    for i in range(len(metadata)):
-        for j in range(i+1, len(metadata)):
-            print(f"Comparing {images[i]} with {images[j]}")
-            if(metadata[i] == metadata[j]):
-                duplicates.append(images[j])
-            else:
-                if compare(proxy_images[i], proxy_images[j]):
-                    if compare(cv2.imread(images[i]), cv2.imread(images[j])):
+        try:
+            for i in range(len(metadata)):
+                for j in range(i+1, len(metadata)):
+                    print(f"Comparing {images[i]} with {images[j]}")
+                    if(metadata[i] == metadata[j]):
                         duplicates.append(images[j])
+                    else:
+                        if compare(proxy_images[i], proxy_images[j]):
+                            if compare(cv2.imread(images[i]), cv2.imread(images[j])):
+                                duplicates.append(images[j])
 
-    for duplicate in duplicates:
-        # orchestrator.duplicate_management(duplicate, images, metadata, proxy_images, defaults.PRINT_ONLY)
-        pass #TODO: Uncomment and remove pass while testing and in production. Commented function call to avoid deleting files.
-                    
+            for duplicate in duplicates:
+                # orchestrator.duplicate_management(duplicate, images, metadata, proxy_images, defaults.PRINT_ONLY)
+                pass #TODO: Uncomment and remove pass while testing and in production. Commented function call to avoid deleting files.
+        except Exception as e:
+            print('Error: ', e)
+            pass
 
     #Holding output for Testing
     input('Done and waiting to die. Press Enter to kill.')
