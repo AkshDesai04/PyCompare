@@ -7,10 +7,14 @@ import transformation
 from pprint import pprint 
 import defaults
 import orchestrator
+from memory_profiler import profile # testing
 
 
 
-if __name__ == "__main__":
+
+@profile
+def main():
+
     metadata = []
     duplicates = []
     proxy_images = []
@@ -35,6 +39,7 @@ if __name__ == "__main__":
     print('proxy_images size: ', str(sys.getsizeof(proxy_images)))
     print('metadata size: ', str(sys.getsizeof(metadata)))
 
+
     for i in range(len(metadata)):
         for j in range(i+1, len(metadata)):
             print(f"Comparing {images[i]} with {images[j]}")
@@ -53,3 +58,7 @@ if __name__ == "__main__":
     #Holding output for Testing
     input('Done and waiting to die. Press Enter to kill.')
     #Holding output for Testing
+    
+
+if __name__ == "__main__":
+    main()
