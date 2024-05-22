@@ -4,3 +4,4 @@ image
 pillow
 exifread
 memory_profiler
+psutil
