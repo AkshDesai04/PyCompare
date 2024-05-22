@@ -19,7 +19,8 @@ def main():
     duplicates = []
     proxy_images = []
 
-    folder = input('Provide the folder path: ') # Getting the path of the folder to drill down into
+    # folder = input('Provide the folder path: ') # Getting the path of the folder to drill down into
+    folder = "./" #temp
     images = drilldown.drilldown(folder) # Getting the list of images in the folder and all sub-folders
 
     # pprint(f"images: {[str(path_object) for path_object in images]}") # more readable than the simple print 
