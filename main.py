@@ -25,11 +25,11 @@ if __name__ == "__main__":
         metadata.append(imagedata.get_image_metadata(image, img)) # Fetching metadata for each image for later comparisons
         proxy_images.append(transformation.resize(img)) # Creating Proxy images and storing in memory
 
-    path = '.\\proxy\\'
+    path = '.\\'
     i = 0
     for img_write in proxy_images:
         print('writing i')
-        cv2.imwrite(path+str(i) + '.jpg', img_write)
+        cv2.imwrite("proxy_file-" + path+str(i) + '.jpg', img_write)
         i += 1
 
     print('proxy_images size: ', str(sys.getsizeof(proxy_images)))
