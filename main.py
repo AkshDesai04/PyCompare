@@ -12,27 +12,20 @@ import psutil
 import threading
 import time
 
-def print_system_stats():
-    while True:
-        # CPU usage
-        cpu_usage = psutil.cpu_percent(interval=1)
-        
-        # RAM usage
-        memory_info = psutil.virtual_memory()
-        ram_usage = memory_info.percent
-        
-        # Disk usage
-        disk_info = psutil.disk_usage('/')
-        disk_usage = disk_info.percent
-        
-        # Print the system stats
-        print(f"CPU Usage: {cpu_usage}%")
-        print(f"RAM Usage: {ram_usage}%")
-        print(f"Disk Usage: {disk_usage}%")
-        print('-' * 20)
-        
-        # Wait for 5 seconds
-        time.sleep(5)
+# Number of threads to use
+threads_to_use = 4
+
+def process_image(image, metadata, proxy_images, duplicates):
+    img = cv2.imread(image)
+    image_metadata = imagedata.get_image_metadata(image, img)
+    metadata.append(image_metadata)
+    proxy_images.append(transformation.resize(img))
+
+    for i, metadata_i in enumerate(metadata[:-1]):
+        if metadata_i == image_metadata:
+            if compare_images_cuda(proxy_images[i], proxy_images[-1]):
+                if compare_images_cuda(cv2.imread(images[i]), cv2.imread(images[-1])):
+                    duplicates.append(images[-1])
 
 def main():
     metadata = []
@@ -43,49 +36,26 @@ def main():
     folder = "./" #temp
     images = drilldown.drilldown(folder) # Getting the list of images in the folder and all sub-folders
 
-    # pprint(f"images: {[str(path_object) for path_object in images]}") # more readable than the simple print 
+    threads = []
     for image in images:
-        print('image ingest')
-        img = cv2.imread(image)
-        metadata.append(imagedata.get_image_metadata(image, img)) # Fetching metadata for each image for later comparisons
-        proxy_images.append(transformation.resize(img)) # Creating Proxy images and storing in memory
+        thread = threading.Thread(target=process_image, args=(image, metadata, proxy_images, duplicates))
+        thread.start()
+        threads.append(thread)
 
-    path = ''
-    i = 0
-    for img_write in proxy_images:
-        print('writing i')
-        cv2.imwrite("proxy_file-" + path + str(i) + '.jpg', img_write)
-        i += 1
+        # Limit the number of concurrent threads
+        if len(threads) >= threads_to_use:
+            for t in threads:
+                t.join()
+            threads = []
 
-    print('proxy_images size: ', str(sys.getsizeof(proxy_images)))
-    print('metadata size: ', str(sys.getsizeof(metadata)))
+    for t in threads:
+        t.join()
 
-    try:
-        for i in range(len(metadata)):
-            for j in range(i + 1, len(metadata)):
-                print(f"Comparing {images[i]} with {images[j]}")
-                if metadata[i] == metadata[j]:
-                    duplicates.append(images[j])
-                else:
-                    if compare_images_cuda(proxy_images[i], proxy_images[j]):
-                        if compare_images_cuda(cv2.imread(images[i]), cv2.imread(images[j])):
-                            duplicates.append(images[j])
+    # Handle duplicate images here
 
-        for duplicate in duplicates:
-            # orchestrator.duplicate_management(duplicate, images, metadata, proxy_images, defaults.PRINT_ONLY)
-            pass #TODO: Uncomment and remove pass while testing and in production. Commented function call to avoid deleting files.
-    except Exception as e:
-        print('Error: ', e)
-        pass
-
-    #Holding output for Testing
+    # Hold output for Testing
     input('Done and waiting to die. Press Enter to kill.')
-    #Holding output for Testing
+    # Hold output for Testing
 
 if __name__ == "__main__":
-    # Start the system stats monitoring in a separate thread
-    stats_thread = threading.Thread(target=print_system_stats)
-    stats_thread.daemon = True
-    stats_thread.start()
-    
     main()
