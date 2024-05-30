@@ -24,8 +24,8 @@ def process_image(image, metadata, proxy_images, duplicates):
     for i, metadata_i in enumerate(metadata[:-1]):
         if metadata_i == image_metadata:
             if compare_images_cuda(proxy_images[i], proxy_images[-1]):
-                if compare_images_cuda(cv2.imread(images[i]), cv2.imread(images[-1])):
-                    duplicates.append(images[-1])
+                if compare_images_cuda(cv2.imread(img[i]), cv2.imread(img[-1])):
+                    duplicates.append(img[-1])
 
 def main():
     metadata = []
