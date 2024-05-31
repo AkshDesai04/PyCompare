@@ -1,61 +1,62 @@
-import sys
+import sys # testing
 import cv2
 import drilldown
 import imagedata
-from compare import compare_images_cuda
+from compare import compare
 import transformation
-from pprint import pprint
+from pprint import pprint 
 import defaults
 import orchestrator
-from memory_profiler import profile
-import psutil
-import threading
-import time
 
-# Number of threads to use
-threads_to_use = 4
-
-def process_image(image, metadata, proxy_images, duplicates):
-    img = cv2.imread(image)
-    image_metadata = imagedata.get_image_metadata(image, img)
-    metadata.append(image_metadata)
-    proxy_images.append(transformation.resize(img))
-
-    for i, metadata_i in enumerate(metadata[:-1]):
-        if metadata_i == image_metadata:
-            if compare_images_cuda(proxy_images[i], proxy_images[-1]):
-                if compare_images_cuda(cv2.imread(img[i]), cv2.imread(img[-1])):
-                    duplicates.append(img[-1])
-
-def main():
+if __name__ == "__main__":
     metadata = []
     duplicates = []
     proxy_images = []
 
-    # folder = input('Provide the folder path: ') # Getting the path of the folder to drill down into
-    folder = "./" #temp
+    folder = input('Provide the folder path: ') # Getting the path of the folder to drill down into
     images = drilldown.drilldown(folder) # Getting the list of images in the folder and all sub-folders
 
-    threads = []
+    # pprint(f"images: {[str(path_object) for path_object in images]}") # more readable than the simple print 
     for image in images:
-        thread = threading.Thread(target=process_image, args=(image, metadata, proxy_images, duplicates))
-        thread.start()
-        threads.append(thread)
+        print('image ingest')
+        img = cv2.imread(image)
+        metadata.append(imagedata.get_image_metadata(image, img)) # Fetching metadata for each image for later comparisons
+        proxy_images.append(transformation.resize(img)) # Creating Proxy images and storing in memory
 
-        # Limit the number of concurrent threads
-        if len(threads) >= threads_to_use:
-            for t in threads:
-                t.join()
-            threads = []
+    path = ''
+    i = 0
+    for img_write in proxy_images:
+        print(f'writing {i}')
+        try:
+            print(".\\proxy\\proxy_file-" + path+str(i) + '.jpg')
+            cv2.imwrite(".\\proxy\\proxy_file-" + path+str(i) + '.jpg', img_write)
+            print("Success")
+        except Exception as e:
+            print(e)
+        i += 1
 
-    for t in threads:
-        t.join()
+    print('proxy_images size: ', str(sys.getsizeof(proxy_images)))
+    print('metadata size: ', str(sys.getsizeof(metadata)))
 
-    # Handle duplicate images here
+    for i in range(len(metadata)):
+        for j in range(i+1, len(metadata)):
+            print(f"Comparing {images[i]} with {images[j]}")
+            # if(metadata[i] == metadata[j]):
+            #     duplicates.append(images[j])
+            # else:
+            if compare(proxy_images[i], proxy_images[j]):
+                print("True")
+                if compare(cv2.imread(images[i]), cv2.imread(images[j]), False):
+                    print("True\n\n\n")
+                    duplicates.append(images[j])
+                else:
+                    print("False\n\n\n")
 
-    # Hold output for Testing
+    for duplicate in duplicates:
+        # orchestrator.duplicate_management(duplicate, images, metadata, proxy_images, defaults.PRINT_ONLY)
+        pass #TODO: Uncomment and remove pass while testing and in production. Commented function call to avoid deleting files.
+                    
+
+    #Holding output for Testing
     input('Done and waiting to die. Press Enter to kill.')
-    # Hold output for Testing
-
-if __name__ == "__main__":
-    main()
+    #Holding output for Testing
