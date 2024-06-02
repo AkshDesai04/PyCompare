@@ -13,11 +13,12 @@ if __name__ == "__main__":
     duplicates = []
     proxy_images = []
 
-    # folder = input('Provide the folder path: ') # Getting the path of the folder to drill down into
-    folder = '.\\ignore\\' # Getting the path of the folder to drill down into
+    folder = input('Provide the folder path: ') # Getting the path of the folder to drill down into
+    # folder = '.\\ignore\\' # Getting the path of the folder to drill down into
+    print(folder)
     images = drilldown.drilldown(folder) # Getting the list of images in the folder and all sub-folders
-
-    # pprint(f"images: {[str(path_object) for path_object in images]}") # more readable than the simple print 
+    
+    pprint(f"images: {[str(path_object) for path_object in images]}") # more readable than the simple print 
     for image in images:
         print('image ingest')
         img = cv2.imread(image)
@@ -52,16 +53,16 @@ if __name__ == "__main__":
     for i in range(len(metadata)):
         for j in range(i+1, len(metadata)):
             print(f"Comparing {images[i]} with {images[j]}")
-            # if(metadata[i] == metadata[j]):
-            #     duplicates.append(images[j])
-            # else:
-            if compare(proxy_images[i], proxy_images[j]):
-                print("True")
-                # if compare(cv2.imread(images[i]), cv2.imread(images[j]), False):
-                #     print("True\n\n\n")
-                #     duplicates.append(images[j])
-                # else:
-                #     print("False\n\n\n")
+            if(metadata[i] == metadata[j]):
+                duplicates.append(images[j])
+            else:
+                if compare(proxy_images[i], proxy_images[j]):
+                    print("True")
+                if compare(cv2.imread(images[i]), cv2.imread(images[j]), False):
+                    print("True\n\n\n")
+                    duplicates.append(images[j])
+                else:
+                    print("False\n\n\n")
 
     for duplicate in duplicates:
         # orchestrator.duplicate_management(duplicate, images, metadata, proxy_images, defaults.PRINT_ONLY)
