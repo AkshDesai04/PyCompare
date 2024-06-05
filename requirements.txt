@@ -1,7 +1,4 @@
-numpy
+tqdm==4.66.4
 opencv-python
-image
-pillow
 exifread
-memory_profiler
-psutil
+scipy

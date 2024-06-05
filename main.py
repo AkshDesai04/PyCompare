@@ -1,74 +1,22 @@
-import sys # testing
-import cv2
-import drilldown
-import imagedata
-from compare import compare
-import transformation
-from pprint import pprint 
-import defaults
-import orchestrator
+import json
+from dataclasses import asdict
+from pycompare import get_duplicates
+from pycompare.process import ImageHash
 
 if __name__ == "__main__":
-    metadata = []
-    duplicates = []
-    proxy_images = []
 
-    folder = input('Provide the folder path: ') # Getting the path of the folder to drill down into
-    # folder = '.\\ignore\\' # Getting the path of the folder to drill down into
-    print(folder)
-    images = drilldown.drilldown(folder) # Getting the list of images in the folder and all sub-folders
+    folder = input("Input Folder path: ")
     
-    pprint(f"images: {[str(path_object) for path_object in images]}") # more readable than the simple print 
-    for image in images:
-        print('image ingest')
-        img = cv2.imread(image)
-        metadata.append(imagedata.get_image_metadata(image, img)) # Fetching metadata for each image for later comparisons
+    # duplicates = get_duplicates("_sample_data")
+    duplicates = get_duplicates(folder)
 
-        # Creating Proxy images and storing in memory
-        p_main = transformation.resize(img) # Main proxy
-        p_r_l1 = transformation.rotate_image(p_main) # Proxy rotating left 1
-        p_r_l2 = transformation.rotate_image(p_r_l1) # Proxy rotating left 2
-        p_r_l3 = transformation.rotate_image(p_r_l2) # Proxy rotating left 3
+    # hash1 = ImageHash.from_str("0x00010x0010d58f6b3c6aa22ad090fe2bc42f853ab480253e963f083f7bc5503e6c7a0f6e1c")
+    # hash2 = ImageHash.from_str("0x00010x0010cb4a4acac8ea5b1bc9ab5556aa55a2d49ee01f609d630fb19c0100dce3fdf378")
 
-        proxy_images.append(p_main)
-        proxy_images.append(p_r_l1)
-        proxy_images.append(p_r_l2)
-        proxy_images.append(p_r_l3)
+    # print(hash1-hash2)
 
-    path = ''
-    i = 0
-    for img_write in proxy_images:
-        print(f'writing {i}')
-        try:
-            print(".\\ignore\\proxy\\proxy_file-" + path+str(i) + '.jpg')
-            cv2.imwrite(".\\ignore\\proxy\\proxy_file-" + path+str(i) + '.jpg', img_write)
-            print("Success")
-        except Exception as e:
-            print(e)
-        i += 1
+    with open("duplicated.json", "w+") as f:
+        json.dump([[asdict(metadata) for metadata in group] for group in duplicates], f, default=str)
 
-    print('proxy_images size: ', str(sys.getsizeof(proxy_images)))
-    print('metadata size: ', str(sys.getsizeof(metadata)))
-
-    for i in range(len(metadata)):
-        for j in range(i+1, len(metadata)):
-            print(f"Comparing {images[i]} with {images[j]}")
-            if(metadata[i] == metadata[j]):
-                duplicates.append(images[j])
-            else:
-                if compare(proxy_images[i], proxy_images[j]):
-                    print("True")
-                if compare(cv2.imread(images[i]), cv2.imread(images[j]), False):
-                    print("True\n\n\n")
-                    duplicates.append(images[j])
-                else:
-                    print("False\n\n\n")
-
-    for duplicate in duplicates:
-        # orchestrator.duplicate_management(duplicate, images, metadata, proxy_images, defaults.PRINT_ONLY)
-        pass #TODO: Uncomment and remove pass while testing and in production. Commented function call to avoid deleting files.
-                    
-
-    #Holding output for Testing
-    input('Done and waiting to die. Press Enter to kill.')
-    #Holding output for Testing
+    # for group in duplicates:
+    #     print([metadata.filepath for metadata in group])
